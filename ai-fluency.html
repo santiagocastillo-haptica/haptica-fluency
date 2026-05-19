@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Fluency — Formación Corporativa · Háptica</title>
+  <meta name="description" content="AI Fluency: aprende a navegar las aguas de la IA con visión estratégica, apalancado en las metodologías de Service Design de Háptica." />
+  <style>
+    /* ─── GOTHAM FONT FACE ───────────────────────────────── */
+    /* Asegúrate de tener los archivos en una carpeta /fonts/  */
+    @font-face { font-family: 'Gotham'; src: local('Gotham Thin'),   local('Gotham-Thin');   font-weight: 100; font-style: normal; }
+    @font-face { font-family: 'Gotham'; src: local('Gotham XLight'), local('Gotham-XLight'); font-weight: 200; font-style: normal; }
+    @font-face { font-family: 'Gotham'; src: local('Gotham Light'),  local('Gotham-Light');  font-weight: 300; font-style: normal; }
+    @font-face { font-family: 'Gotham'; src: local('Gotham Book'),   local('Gotham-Book');   font-weight: 400; font-style: normal; }
+    @font-face { font-family: 'Gotham'; src: local('Gotham Book'),   local('Gotham-BookItalic'); font-weight: 400; font-style: italic; }
+    @font-face { font-family: 'Gotham'; src: local('Gotham Medium'), local('Gotham-Medium'); font-weight: 500; font-style: normal; }
+    @font-face { font-family: 'Gotham'; src: local('Gotham Bold'),   local('Gotham-Bold');   font-weight: 700; font-style: normal; }
+    @font-face { font-family: 'Gotham'; src: local('Gotham Black'),  local('Gotham-Black');  font-weight: 800; font-style: normal; }
+    @font-face { font-family: 'Gotham'; src: local('Gotham Ultra'),  local('Gotham-Ultra');  font-weight: 900; font-style: normal; }
+
+    /* ─── TOKENS ─────────────────────────────────────────── */
+    :root {
+      --orange:   #FA4616;
+      --teal:     #003237;
+      --teal-mid: #006653;
+      --emerald:  #00BCA0;
+      --yellow:   #FBB833;
+      --cream:    #f5f0e6;
+      --white:    #ffffff;
+      --ink:      #1a1a1a;
+      --orange-dk:#D93A0C;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Gotham', sans-serif;
+      background: var(--cream);
+      color: var(--teal);
+      overflow-x: hidden;
+    }
+    img, svg { display: block; }
+    a { text-decoration: none; color: inherit; }
+    button, input, select, textarea { font-family: inherit; }
+
+    /* ─── REVEAL ─────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.32s; }
+    .reveal-d4 { transition-delay: 0.44s; }
+
+    h1, h2, h3, h4 { font-family: 'Gotham', sans-serif; line-height: 1.08; }
+
+    /* ══════════════════════════════════════════════════════
+       §1  HERO — crema, ondas naranjas arriba
+    ══════════════════════════════════════════════════════ */
+    .hero {
+      background: var(--cream);
+      padding-bottom: 72px;
+      overflow: hidden;
+    }
+
+    /* Bloque de ondas decorativas */
+    .wave-block {
+      width: 100%;
+      overflow: hidden;
+      margin-bottom: 48px;
+    }
+    .wave-block svg {
+      width: 100%;
+      display: block;
+    }
+
+    /* Contenido hero: centrado editorial */
+    .hero-content {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 24px;
+      text-align: center;
+    }
+
+    .hero-label {
+      font-family: 'Gotham', sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-size: clamp(5rem, 12vw, 9rem);
+      font-weight: 800;
+      line-height: 0.9;
+      color: var(--teal);
+      margin-bottom: 6px;
+    }
+    .hero-title .fluency {
+      display: block;
+      font-style: italic;
+      color: var(--orange);
+    }
+
+    .hero-subtitle {
+      font-size: 1rem;
+      line-height: 1.68;
+      color: var(--teal);
+      opacity: 0.65;
+      margin: 24px auto 36px;
+      max-width: 480px;
+    }
+
+    /* Logo Háptica centrado */
+    .haptica-brand {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+    .haptica-wordmark {
+      font-family: 'Gotham', sans-serif;
+      font-weight: 700;
+      font-size: 0.72rem;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      color: var(--teal);
+      opacity: 0.5;
+    }
+
+    /* CTA */
+    .hero-cta {
+      display: inline-block;
+      margin-top: 36px;
+      background: var(--orange);
+      color: var(--white);
+      font-family: 'Gotham', sans-serif;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 14px 36px;
+      border-radius: 3px;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .hero-cta:hover { background: var(--orange-dk); transform: translateY(-2px); }
+
+    /* ══════════════════════════════════════════════════════
+       §2  EL PROGRAMA — fondo oscuro teal
+    ══════════════════════════════════════════════════════ */
+    .programa { background: var(--teal); overflow: hidden; }
+
+    /* Ticker bar */
+    .prog-ticker {
+      border-bottom: 1px solid rgba(255,255,255,0.09);
+      padding: 13px 0;
+    }
+    .prog-ticker-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .ticker-label {
+      font-family: 'Gotham', sans-serif;
+      font-size: 0.63rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+    }
+    .ticker-flow {
+      font-family: 'Gotham', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      color: var(--orange);
+    }
+
+    /* Etapas: filas verticales */
+    .etapas-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 72px 40px 80px;
+    }
+
+    .etapa-row {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 48px;
+      align-items: start;
+      padding: 48px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .etapa-row:first-child { padding-top: 0; }
+    .etapa-row:last-child { border-bottom: none; padding-bottom: 0; }
+
+    /* Left: número + nombre + ola */
+    .etapa-left {}
+    .etapa-num {
+      font-family: 'Gotham', sans-serif;
+      font-size: clamp(5rem, 9vw, 7.5rem);
+      font-weight: 800;
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+    .etapa-num.c1 { color: #5295DA; }   /* Descubrir — azul */
+    .etapa-num.c2 { color: var(--emerald); }
+    .etapa-num.c3 { color: var(--yellow); }
+
+    .etapa-name {
+      font-family: 'Gotham', sans-serif;
+      font-weight: 700;
+      font-size: 1.9rem;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .etapa-name.c1 { color: #5295DA; }
+    .etapa-name.c2 { color: var(--emerald); }
+    .etapa-name.c3 { color: var(--yellow); }
+
+    .etapa-wave { margin-bottom: 0; }
+
+    /* Right: descripción */
+    .etapa-right { padding-top: 12px; }
+    .etapa-desc {
+      font-size: 1.02rem;
+      line-height: 1.72;
+      color: rgba(255,255,255,0.75);
+    }
+    .etapa-desc strong {
+      color: var(--white);
+      font-weight: 600;
+    }
+    .etapa-desc em {
+      font-style: italic;
+      color: rgba(255,255,255,0.9);
+    }
+
+    /* Wave divider */
+    .wave-div {
+      width: 100%;
+      overflow: hidden;
+      line-height: 0;
+    }
+    .wave-div svg { display: block; width: 100%; }
+
+    /* ══════════════════════════════════════════════════════
+       §3  STATS
+    ══════════════════════════════════════════════════════ */
+    .stats { background: var(--cream); padding: 64px 0; }
+    .stats-grid {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 40px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border: 1.5px solid rgba(0,50,55,0.13);
+      border-radius: 4px;
+      overflow: hidden;
+      background: var(--white);
+    }
+    .stat-box {
+      padding: 36px 28px;
+      border-right: 1.5px solid rgba(0,50,55,0.1);
+    }
+    .stat-box:last-child { border-right: none; }
+    .stat-box.hl { background: var(--orange); }
+    .stat-num {
+      font-family: 'Gotham', sans-serif;
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--teal);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-box.hl .stat-num { color: var(--white); }
+    .stat-lbl {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(0,50,55,0.4);
+    }
+    .stat-box.hl .stat-lbl { color: rgba(255,255,255,0.7); }
+
+    /* ══════════════════════════════════════════════════════
+       §4  FORMADORES — fondo blanco
+    ══════════════════════════════════════════════════════ */
+    .formadores { background: var(--white); padding: 96px 0; }
+    .section-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    .section-eyebrow {
+      font-family: 'Gotham', sans-serif;
+      font-size: 0.63rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 10px;
+    }
+    .section-heading {
+      font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      color: var(--teal);
+      margin-bottom: 52px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .form-card {
+      border: 1.5px solid rgba(0,50,55,0.1);
+      border-radius: 4px;
+      padding: 32px 26px;
+      background: var(--cream);
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .form-card:hover { box-shadow: 0 16px 40px rgba(0,50,55,0.09); transform: translateY(-3px); }
+
+    .avatar {
+      width: 56px; height: 56px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Gotham', sans-serif; font-weight: 800; font-size: 0.95rem;
+      color: var(--white); margin-bottom: 18px;
+    }
+    .av1 { background: #5295DA; }
+    .av2 { background: var(--orange); }
+    .av3 { background: var(--yellow); color: var(--teal); }
+
+    .form-name { font-family: 'Gotham', sans-serif; font-weight: 700; font-size: 1.05rem; color: var(--teal); margin-bottom: 4px; }
+    .form-role { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--orange); margin-bottom: 12px; }
+    .form-bio { font-size: 0.88rem; line-height: 1.62; color: rgba(0,50,55,0.6); margin-bottom: 18px; }
+    .li-link {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em;
+      text-transform: uppercase; color: var(--teal); opacity: 0.35;
+      transition: opacity 0.2s;
+    }
+    .li-link:hover { opacity: 1; }
+    .li-link svg { width: 14px; height: 14px; }
+
+    /* ══════════════════════════════════════════════════════
+       §5  CONTACTO — teal oscuro
+    ══════════════════════════════════════════════════════ */
+    .contacto { background: var(--teal); padding: 96px 0; }
+    .contacto-grid {
+      max-width: 1100px; margin: 0 auto; padding: 0 40px;
+      display: grid; grid-template-columns: 1fr 1.3fr;
+      gap: 80px; align-items: start;
+    }
+
+    .c-eyebrow { color: var(--yellow); margin-bottom: 10px; font-family: 'Gotham', sans-serif; font-size: 0.63rem; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; }
+    .c-heading {
+      font-size: clamp(1.9rem, 3.5vw, 2.6rem);
+      font-weight: 800; color: var(--white); margin-bottom: 18px; line-height: 1.12;
+    }
+    .c-heading em { font-style: italic; color: var(--orange); }
+    .c-sub { font-size: 0.97rem; line-height: 1.7; color: rgba(255,255,255,0.5); margin-bottom: 40px; }
+    .c-info { display: flex; flex-direction: column; gap: 10px; }
+    .c-row { display: flex; align-items: center; gap: 9px; font-size: 0.88rem; color: rgba(255,255,255,0.45); }
+    .c-row svg { width: 15px; height: 15px; opacity: 0.5; flex-shrink: 0; }
+
+    /* Form */
+    .c-form { display: flex; flex-direction: column; gap: 12px; }
+    .f-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .f-group { display: flex; flex-direction: column; gap: 5px; }
+    .f-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.32); }
+    .f-input, .f-select, .f-textarea {
+      background: rgba(255,255,255,0.07);
+      border: 1.5px solid rgba(255,255,255,0.1);
+      border-radius: 4px; padding: 12px 14px;
+      color: var(--white); font-size: 0.94rem;
+      outline: none; width: 100%;
+      transition: border-color 0.2s;
+    }
+    .f-input::placeholder, .f-textarea::placeholder { color: rgba(255,255,255,0.2); }
+    .f-input:focus, .f-select:focus, .f-textarea:focus { border-color: var(--orange); }
+    .f-select {
+      appearance: none; cursor: pointer;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath d='M1 1l4 4 4-4' stroke='rgba(255,255,255,0.35)' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+    }
+    .f-select option { background: var(--teal); }
+    .f-textarea { resize: vertical; min-height: 96px; }
+    .f-submit {
+      background: var(--orange); color: var(--white);
+      font-family: 'Gotham', sans-serif; font-weight: 700;
+      font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase;
+      border: none; border-radius: 4px; padding: 14px 28px;
+      cursor: pointer; align-self: flex-start;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .f-submit:hover { background: var(--orange-dk); transform: translateY(-2px); }
+
+    .form-success {
+      display: none;
+      background: rgba(0,188,160,0.09);
+      border: 1.5px solid var(--emerald);
+      border-radius: 8px; padding: 32px;
+      text-align: center;
+    }
+    .form-success.show { display: block; }
+    .form-success-icon { font-size: 2rem; margin-bottom: 12px; }
+    .form-success h4 { font-family: 'Gotham', sans-serif; font-size: 1.1rem; color: var(--emerald); margin-bottom: 8px; }
+    .form-success p { font-size: 0.88rem; color: rgba(255,255,255,0.5); line-height: 1.6; }
+
+    /* ══════════════════════════════════════════════════════
+       §6  FOOTER
+    ══════════════════════════════════════════════════════ */
+    .footer { background: #001a20; padding: 24px 0; border-top: 1px solid rgba(255,255,255,0.05); }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto; padding: 0 40px;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+    }
+    .footer-brand { display: flex; align-items: center; gap: 10px; }
+    .footer-brand span { font-family: 'Gotham', sans-serif; font-weight: 700; font-size: 0.82rem; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.4); }
+    .footer-copy { font-size: 0.75rem; color: rgba(255,255,255,0.22); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 860px) {
+      .etapa-row { grid-template-columns: 1fr; gap: 20px; padding: 40px 0; }
+      .etapas-wrap { padding: 56px 24px 64px; }
+      .prog-ticker-inner { padding: 0 24px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .stat-box { border-right: none; border-bottom: 1.5px solid rgba(0,50,55,0.1); }
+      .stat-box:last-child { border-bottom: none; }
+      .form-grid { grid-template-columns: 1fr; }
+      .contacto-grid { grid-template-columns: 1fr; gap: 48px; }
+      .f-row { grid-template-columns: 1fr; }
+      .section-inner { padding: 0 24px; }
+      .stats-grid { margin: 0 24px; }
+    }
+    @media (max-width: 560px) {
+      .stats-grid { grid-template-columns: 1fr; margin: 0 20px; }
+      .hero-content { padding: 0 20px; }
+      .footer-inner { padding: 0 20px; }
+      .ticker-flow { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════
+     §1  HERO
+════════════════════════════════════════════════════════ -->
+<section class="hero" id="inicio">
+
+  <!-- Ondas decorativas naranjas — el motivo principal -->
+  <div class="wave-block" aria-hidden="true">
+    <svg viewBox="0 0 1200 220" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" style="height:clamp(140px,18vw,220px);">
+      <!-- 8 líneas onduladas, espaciadas verticalmente -->
+      <path d="M-100,24  C50,8   200,40  350,24  S650,8   800,24  S1100,40 1300,24" stroke="#FA4616" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+      <path d="M-100,48  C50,32  200,64  350,48  S650,32  800,48  S1100,64 1300,48" stroke="#FA4616" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+      <path d="M-100,72  C50,56  200,88  350,72  S650,56  800,72  S1100,88 1300,72" stroke="#FA4616" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+      <path d="M-100,96  C50,80  200,112 350,96  S650,80  800,96  S1100,112 1300,96" stroke="#FA4616" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+      <path d="M-100,120 C50,104 200,136 350,120 S650,104 800,120 S1100,136 1300,120" stroke="#FA4616" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+      <path d="M-100,144 C50,128 200,160 350,144 S650,128 800,144 S1100,160 1300,144" stroke="#FA4616" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+      <path d="M-100,168 C50,152 200,184 350,168 S650,152 800,168 S1100,184 1300,168" stroke="#FA4616" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+      <path d="M-100,192 C50,176 200,208 350,192 S650,176 800,192 S1100,208 1300,192" stroke="#FA4616" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <p class="hero-label reveal">Formación Corporativa</p>
+
+    <h1 class="hero-title reveal reveal-d1">
+      AI
+      <span class="fluency">Fluency</span>
+    </h1>
+
+    <p class="hero-subtitle reveal reveal-d2">
+      Aprender a navegar las aguas de la IA con visión estratégica, apalancado en las metodologías de Service Design de Háptica.
+    </p>
+
+    <!-- Logo Háptica -->
+    <div class="haptica-brand reveal reveal-d3">
+      <svg width="48" height="48" viewBox="0 0 390 388" xmlns="http://www.w3.org/2000/svg" aria-label="Logo Háptica" style="color:var(--orange);">
+        <g transform="translate(0,388) scale(0.1,-0.1)" fill="currentColor" stroke="none">
+          <path d="M1557 3494 c-55 -17 -119 -75 -142 -130 -22 -53 -19 -151 5 -199 11-22 20 -40 20 -42 0 -1 -19 7 -42 19 -57 30 -148 30 -211 -1 -48 -23 -99 -77-117 -125 -17 -45 -12 -146 10 -193 l19 -43 -42 21 c-28 15 -61 22 -102 22-102 1 -185 -52 -223 -143 -22 -53 -19 -148 7 -197 l21 -42 -43 19 c-62 28-161 27 -218 -3 -112 -59 -157 -203 -98 -317 10 -19 81 -98 158 -175 l141-140 -134 -135 c-73 -74 -143 -149 -154 -166 -52 -76 -48 -195 9 -272 62 -84202 -119 294 -72 22 11 41 20 42 20 2 0 -4 -15 -13 -32 -61 -116 -21 -255 91-319 62 -36 155 -40 222 -10 l41 19 -19 -41 c-29 -65 -26 -157 8 -219 61 -112205 -155 320 -95 l32 17 -19 -42 c-31 -68 -27 -160 9 -223 52 -92 155 -138256 -115 65 15 89 33 245 187 l136 133 139 -141 c77 -77 158 -150 180 -161 56-30 146 -29 208 1 48 23 99 77 117 125 16 44 12 146 -9 193 l-19 41 45 -20c55 -24 144 -26 194 -5 46 19 107 80 126 126 23 54 20 148 -6 198 l-21 42 43-19 c47 -22 148 -27 193 -10 48 18 102 69 125 117 31 63 31 154 1 211 -12 23-20 42 -19 42 2 0 20 -9 42 -20 63 -32 156 -28 222 10 98 56 141 164 109 274-16 54 -28 70 -163 207 l-146 149 146 149 c135 137 147 153 163 207 14 49 1568 6 113 -15 68 -50 123 -104 158 -57 38 -164 45 -232 15 l-46 -21 19 37 c59119 14 261 -103 321 -63 32 -153 33 -213 2 l-42 -21 21 48 c92 207 -122 412-324 311 l-37 -19 21 46 c30 68 23 175 -15 232 -35 54 -90 89 -158 104 -45 9-64 8 -113 -6 -54 -16 -70 -28 -207 -163 l-149 -146 -149 146 c-131 129 -154147 -201 161 -64 19 -90 19 -153 0z m131 -118 c15 -8 85 -73 157 -145 l130-131 -85 -85 -85 -85 -137 137 c-75 75 -143 150 -149 166 -27 64 40 157 113157 16 0 41 -6 56 -14z m877 -16 c34 -32 48 -73 40 -117 -6 -33 -48 -79 -313-345 -168 -170 -311 -308 -316 -308 -14 0 -166 152 -166 165 0 12 596 608 625624 30 17 102 7 130 -19z m-1222 -321 c28 -14 627 -610 627 -624 0 -13 -152-165 -165 -165 -6 0 -149 138 -317 308 -268 269 -307 312 -313 346 -18 94 86177 168 135z m1545 -9 c44 -27 67 -77 57 -126 -5 -31 -30 -62 -146 -179 l-138-140 -88 87 -88 88 125 126 c69 69 139 135 155 145 39 24 82 24 123 -1z m-238-615 c0 -6 -36 -46 -80 -90 l-80 -80 -172 173 -173 172 85 85 85 85 167 -167c93 -92 168 -172 168 -178z m-1642 281 c15 -8 85 -73 157 -145 l130 -131 -88-88 -87 -87 -139 140 c-117 117 -140 146 -146 179 -19 97 87 177 173 132zm2213 -1 c57 -30 84 -106 58 -158 -14 -28 -610 -627 -624 -627 -13 0 -165 152-165 165 0 16 591 602 625 619 38 20 68 20 106 1z m-911 -450 c0 -13 -322-335 -335 -335 -13 0 -165 152 -165 165 0 5 75 85 167 177 l168 168 82 -82c46 -46 83 -87 83 -93z m-758 88 c43 -43 78 -82 78 -88 0 -13 -322 -335 -335-335 -13 0 -165 152 -165 165 0 13 322 335 335 335 5 0 45 -35 87 -77z m-895 26 c29 -11 633 -606 633 -624 0 -13 -152 -165 -165 -165 -14 0 -610 599 -624627 -26 51 -2 120 52 153 36 22 63 25 104 9z m2914 -12 c57 -38 74 -99 45-155 -8 -15 -73 -85 -145 -157 l-131 -130 -87 88 -88 87 130 130 c167 167 204186 276 137z m-1764 -439 c90 -90 163 -167 163 -173 0 -13 -152 -165 -165-165 -13 0 -335 322 -335 335 0 13 152 165 165 165 5 0 83 -73 172 -162z m680 0 c90 -90 163 -167 163 -173 0 -13 -152 -165 -165 -165 -13 0 -335 322 -335335 0 13 152 165 165 165 5 0 83 -73 172 -162z m820 -140 c165 -167 306 -313312 -325 30 -59 -7 -138 -76 -162 -32 -12 -46 -12 -70 -2 -16 6 -168 151 -338321 l-310 310 80 80 c44 44 84 80 90 80 5 0 146 -136 312 -302z m-2435 -115c43 -43 78 -82 78 -89 0 -6 -62 -72 -138 -146 -109 -108 -146 -138 -174 -14394 -18 -179 86 -137 168 14 28 270 287 284 287 5 0 45 -35 87 -77z m680 0c43 -43 78 -82 78 -88 0 -6 -138 -149 -307 -317 -270 -268 -313 -307 -347-313 -94 -18 -177 86 -135 168 14 28 610 627 624 627 5 0 45 -35 87 -77z m680 0 c43 -43 78 -82 78 -88 0 -13 -322 -335 -335 -335 -13 0 -165 152 -165 165 013 322 335 335 335 5 0 45 -35 87 -77z m680 0 c43 -43 78 -82 78 -88 0 -13-322 -335 -335 -335 -13 0 -165 152 -165 165 0 13 322 335 335 335 5 0 45 -3587 -77z m-1105 -425 c90 -90 163 -167 163 -173 0 -13 -152 -165 -165 -165 -130 -335 322 -335 335 0 13 152 165 165 165 5 0 83 -73 172 -162z m825 -145c272 -274 307 -312 314 -348 15 -81 -60 -156 -141 -141 -36 7 -74 42 -347 314-170 169 -308 311 -308 317 0 13 152 165 165 165 6 0 148 -138 317 -307z m505175 c72 -73 136 -143 142 -155 42 -82 -41 -186 -135 -168 -31 5 -62 30 -179145 l-140 139 85 86 c46 47 87 85 90 85 3 0 64 -60 137 -132z m-1585 -285 c43-43 78 -82 78 -88 0 -6 -62 -72 -137 -147 -117 -115 -144 -137 -178 -144 -8015 -156 60 -141 141 6 32 30 62 144 177 74 76 140 138 146 138 6 0 46 -35 88-77z m680 0 c43 -43 78 -82 78 -88 0 -14 -599 -610 -627 -624 -83 -42 -186 43-168 138 6 30 54 84 313 344 168 169 311 307 316 307 6 0 46 -35 88 -77z m230-401 c113 -114 138 -145 144 -176 18 -97 -88 -177 -174 -132 -15 8 -85 73-157 145 l-130 131 85 85 c46 47 87 85 91 85 3 0 67 -62 141 -138z"/>
+        </g>
+      </svg>
+      <span class="haptica-wordmark">Háptica</span>
+    </div>
+
+    <a href="#contacto" class="hero-cta reveal reveal-d4">Inscribir mi equipo →</a>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     §2  EL PROGRAMA
+════════════════════════════════════════════════════════ -->
+<section class="programa" id="programa">
+
+  <!-- Ticker -->
+  <div class="prog-ticker">
+    <div class="prog-ticker-inner">
+      <span class="ticker-label">El Programa · 3 Etapas</span>
+      <span class="ticker-flow">CREAR → INTEGRAR → CONSTRUIR</span>
+      <span class="ticker-label">12h de formación</span>
+    </div>
+  </div>
+
+  <!-- Etapas verticales -->
+  <div class="etapas-wrap">
+
+    <!-- 01 Crear -->
+    <div class="etapa-row reveal">
+      <div class="etapa-left">
+        <div class="etapa-num c1">01.</div>
+        <div class="etapa-name c1">Crear.</div>
+        <div class="etapa-wave" aria-hidden="true">
+          <svg width="80" height="14" viewBox="0 0 80 14" fill="none">
+            <path d="M0,7 C10,2 20,12 30,7 C40,2 50,12 60,7 C70,2 77,12 80,7" stroke="#5295DA" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="etapa-right">
+        <p class="etapa-desc">Iniciamos el programa evolucionando la forma en que tu equipo usa la IA: pasar de simplemente <em>"pedirle cosas"</em> a utilizarla para <strong>elevar la calidad y la velocidad del trabajo diario</strong>, sin perder su sello ni su visión.</p>
+      </div>
+    </div>
+
+    <!-- 02 Integrar -->
+    <div class="etapa-row reveal">
+      <div class="etapa-left">
+        <div class="etapa-num c2">02.</div>
+        <div class="etapa-name c2">Integrar.</div>
+        <div class="etapa-wave" aria-hidden="true">
+          <svg width="80" height="14" viewBox="0 0 80 14" fill="none">
+            <path d="M0,7 C10,2 20,12 30,7 C40,2 50,12 60,7 C70,2 77,12 80,7" stroke="#00BCA0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="etapa-right">
+        <p class="etapa-desc">Continuamos la transformación evolucionando la forma en que tu equipo incorpora la IA: pasar de <em>conversar con chats aislados</em> a <strong>articularla con los sistemas y herramientas reales</strong> de la organización.</p>
+      </div>
+    </div>
+
+    <!-- 03 Construir -->
+    <div class="etapa-row reveal">
+      <div class="etapa-left">
+        <div class="etapa-num c3">03.</div>
+        <div class="etapa-name c3">Construir.</div>
+        <div class="etapa-wave" aria-hidden="true">
+          <svg width="80" height="14" viewBox="0 0 80 14" fill="none">
+            <path d="M0,7 C10,2 20,12 30,7 C40,2 50,12 60,7 C70,2 77,12 80,7" stroke="#FBB833" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+      </div>
+      <div class="etapa-right">
+        <p class="etapa-desc">Empoderamos a tu equipo evolucionando la forma en que desarrolla soluciones con IA: pasar de <em>depender solo de herramientas existentes</em> a <strong>diseñar y construir soluciones propias</strong> para las necesidades concretas de su área.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Wave salida -->
+  <div class="wave-div" aria-hidden="true">
+    <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:40px;">
+      <path d="M0,20 C360,40 1080,0 1440,20 L1440,40 L0,40Z" fill="#f5f0e6"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     §3  STATS
+════════════════════════════════════════════════════════ -->
+<section class="stats" id="detalles">
+  <div class="stats-grid reveal">
+    <div class="stat-box">
+      <div class="stat-num">3</div>
+      <div class="stat-lbl">Etapas</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">4 h</div>
+      <div class="stat-lbl">Por Etapa</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-num">20–25</div>
+      <div class="stat-lbl">Personas</div>
+    </div>
+    <div class="stat-box hl">
+      <div class="stat-num">$5.000</div>
+      <div class="stat-lbl">USD · Inversión</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     §4  FORMADORES
+════════════════════════════════════════════════════════ -->
+<section class="formadores" id="formadores">
+  <div class="section-inner">
+    <p class="section-eyebrow reveal">El Equipo</p>
+    <h2 class="section-heading reveal reveal-d1">Los Formadores</h2>
+
+    <div class="form-grid">
+      <div class="form-card reveal reveal-d1">
+        <div class="avatar av1">AF</div>
+        <h3 class="form-name">Angélica Flechas</h3>
+        <p class="form-role">Service Design & IA Aplicada</p>
+        <p class="form-bio">Especialista en Service Design e IA aplicada. Facilitadora de procesos de transformación organizacional con enfoque humano.</p>
+        <a href="#" class="li-link">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+      </div>
+
+      <div class="form-card reveal reveal-d2">
+        <div class="avatar av2">GM</div>
+        <h3 class="form-name">Germán Martínez</h3>
+        <p class="form-role">Estrategia de Innovación & Tecnología</p>
+        <p class="form-bio">Estratega de innovación y tecnología. Ha liderado proyectos de adopción de IA en organizaciones de diferentes sectores.</p>
+        <a href="#" class="li-link">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+      </div>
+
+      <div class="form-card reveal reveal-d3">
+        <div class="avatar av3">CN</div>
+        <h3 class="form-name">Camilo Niño</h3>
+        <p class="form-role">Diseño de Experiencias de Aprendizaje</p>
+        <p class="form-bio">Diseñador de experiencias de aprendizaje. Experto en metodologías ágiles y formación corporativa con propósito.</p>
+        <a href="#" class="li-link">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Wave blanca → teal -->
+<div class="wave-div" aria-hidden="true" style="background:var(--white);">
+  <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:40px;">
+    <path d="M0,10 C240,40 720,0 1440,22 L1440,40 L0,40Z" fill="#003237"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     §5  CONTACTO
+════════════════════════════════════════════════════════ -->
+<section class="contacto" id="contacto">
+  <div class="contacto-grid">
+    <div>
+      <p class="c-eyebrow reveal">Hablemos</p>
+      <h2 class="c-heading reveal reveal-d1">¿Listos para que tu equipo <em>fluya</em> con IA?</h2>
+      <p class="c-sub reveal reveal-d2">Escríbenos y un asesor del equipo comercial se pondrá en contacto contigo para diseñar el programa a la medida de tu organización.</p>
+
+      <!-- Ola decorativa -->
+      <div aria-hidden="true" class="reveal reveal-d3" style="margin-bottom:28px;">
+        <svg width="100" height="16" viewBox="0 0 100 16" fill="none">
+          <path d="M0,8 C12,2 25,14 37,8 C50,2 62,14 75,8 C87,2 95,14 100,8" stroke="#FBB833" stroke-width="2.2" fill="none" stroke-linecap="round" opacity="0.55"/>
+        </svg>
+      </div>
+
+      <div class="c-info reveal reveal-d4">
+        <div class="c-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+          </svg>
+          hola@haptica.co
+        </div>
+        <div class="c-row">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.15 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.07 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.09 8.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21 16z"/>
+          </svg>
+          +57 300 000 0000
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal reveal-d2">
+      <form class="c-form" id="contactForm" novalidate>
+        <div class="f-row">
+          <div class="f-group">
+            <label class="f-label" for="nombre">Nombre completo *</label>
+            <input class="f-input" type="text" id="nombre" placeholder="Tu nombre" required autocomplete="name"/>
+          </div>
+          <div class="f-group">
+            <label class="f-label" for="empresa">Empresa *</label>
+            <input class="f-input" type="text" id="empresa" placeholder="Tu empresa" required autocomplete="organization"/>
+          </div>
+        </div>
+        <div class="f-row">
+          <div class="f-group">
+            <label class="f-label" for="correo">Correo electrónico *</label>
+            <input class="f-input" type="email" id="correo" placeholder="tu@empresa.com" required autocomplete="email"/>
+          </div>
+          <div class="f-group">
+            <label class="f-label" for="personas">Número de personas *</label>
+            <select class="f-select" id="personas" required>
+              <option value="" disabled selected>Selecciona</option>
+              <option>1 – 10 personas</option>
+              <option>10 – 20 personas</option>
+              <option>20 – 25 personas</option>
+              <option>Más de 25 personas</option>
+            </select>
+          </div>
+        </div>
+        <div class="f-group">
+          <label class="f-label" for="mensaje">Mensaje (opcional)</label>
+          <textarea class="f-textarea" id="mensaje" placeholder="Cuéntanos sobre tu equipo…"></textarea>
+        </div>
+        <button type="submit" class="f-submit">Quiero más información →</button>
+      </form>
+
+      <div class="form-success" id="formSuccess" role="alert" aria-live="polite">
+        <div class="form-success-icon">✦</div>
+        <h4>¡Mensaje enviado!</h4>
+        <p>Gracias por tu interés en AI Fluency. Un asesor de Háptica se pondrá en contacto contigo muy pronto.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════
+     §6  FOOTER
+════════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <svg width="30" height="30" viewBox="0 0 390 388" xmlns="http://www.w3.org/2000/svg" aria-label="Logo Háptica" style="color:var(--orange); opacity:0.7;">
+        <g transform="translate(0,388) scale(0.1,-0.1)" fill="currentColor" stroke="none">
+          <path d="M1557 3494 c-55 -17 -119 -75 -142 -130 -22 -53 -19 -151 5 -199 11-22 20 -40 20 -42 0 -1 -19 7 -42 19 -57 30 -148 30 -211 -1 -48 -23 -99 -77-117 -125 -17 -45 -12 -146 10 -193 l19 -43 -42 21 c-28 15 -61 22 -102 22-102 1 -185 -52 -223 -143 -22 -53 -19 -148 7 -197 l21 -42 -43 19 c-62 28-161 27 -218 -3 -112 -59 -157 -203 -98 -317 10 -19 81 -98 158 -175 l141-140 -134 -135 c-73 -74 -143 -149 -154 -166 -52 -76 -48 -195 9 -272 62 -84202 -119 294 -72 22 11 41 20 42 20 2 0 -4 -15 -13 -32 -61 -116 -21 -255 91-319 62 -36 155 -40 222 -10 l41 19 -19 -41 c-29 -65 -26 -157 8 -219 61 -112205 -155 320 -95 l32 17 -19 -42 c-31 -68 -27 -160 9 -223 52 -92 155 -138256 -115 65 15 89 33 245 187 l136 133 139 -141 c77 -77 158 -150 180 -161 56-30 146 -29 208 1 48 23 99 77 117 125 16 44 12 146 -9 193 l-19 41 45 -20c55 -24 144 -26 194 -5 46 19 107 80 126 126 23 54 20 148 -6 198 l-21 42 43-19 c47 -22 148 -27 193 -10 48 18 102 69 125 117 31 63 31 154 1 211 -12 23-20 42 -19 42 2 0 20 -9 42 -20 63 -32 156 -28 222 10 98 56 141 164 109 274-16 54 -28 70 -163 207 l-146 149 146 149 c135 137 147 153 163 207 14 49 1568 6 113 -15 68 -50 123 -104 158 -57 38 -164 45 -232 15 l-46 -21 19 37 c59119 14 261 -103 321 -63 32 -153 33 -213 2 l-42 -21 21 48 c92 207 -122 412-324 311 l-37 -19 21 46 c30 68 23 175 -15 232 -35 54 -90 89 -158 104 -45 9-64 8 -113 -6 -54 -16 -70 -28 -207 -163 l-149 -146 -149 146 c-131 129 -154147 -201 161 -64 19 -90 19 -153 0z m131 -118 c15 -8 85 -73 157 -145 l130-131 -85 -85 -85 -85 -137 137 c-75 75 -143 150 -149 166 -27 64 40 157 113157 16 0 41 -6 56 -14z m877 -16 c34 -32 48 -73 40 -117 -6 -33 -48 -79 -313-345 -168 -170 -311 -308 -316 -308 -14 0 -166 152 -166 165 0 12 596 608 625624 30 17 102 7 130 -19z m-1222 -321 c28 -14 627 -610 627 -624 0 -13 -152-165 -165 -165 -6 0 -149 138 -317 308 -268 269 -307 312 -313 346 -18 94 86177 168 135z m1545 -9 c44 -27 67 -77 57 -126 -5 -31 -30 -62 -146 -179 l-138-140 -88 87 -88 88 125 126 c69 69 139 135 155 145 39 24 82 24 123 -1z m-238-615 c0 -6 -36 -46 -80 -90 l-80 -80 -172 173 -173 172 85 85 85 85 167 -167c93 -92 168 -172 168 -178z m-1642 281 c15 -8 85 -73 157 -145 l130 -131 -88-88 -87 -87 -139 140 c-117 117 -140 146 -146 179 -19 97 87 177 173 132zm2213 -1 c57 -30 84 -106 58 -158 -14 -28 -610 -627 -624 -627 -13 0 -165 152-165 165 0 16 591 602 625 619 38 20 68 20 106 1z m-911 -450 c0 -13 -322-335 -335 -335 -13 0 -165 152 -165 165 0 5 75 85 167 177 l168 168 82 -82c46 -46 83 -87 83 -93z m-758 88 c43 -43 78 -82 78 -88 0 -13 -322 -335 -335-335 -13 0 -165 152 -165 165 0 13 322 335 335 335 5 0 45 -35 87 -77z m-895 26 c29 -11 633 -606 633 -624 0 -13 -152 -165 -165 -165 -14 0 -610 599 -624627 -26 51 -2 120 52 153 36 22 63 25 104 9z m2914 -12 c57 -38 74 -99 45-155 -8 -15 -73 -85 -145 -157 l-131 -130 -87 88 -88 87 130 130 c167 167 204186 276 137z m-1764 -439 c90 -90 163 -167 163 -173 0 -13 -152 -165 -165-165 -13 0 -335 322 -335 335 0 13 152 165 165 165 5 0 83 -73 172 -162z m680 0 c90 -90 163 -167 163 -173 0 -13 -152 -165 -165 -165 -13 0 -335 322 -335335 0 13 152 165 165 165 5 0 83 -73 172 -162z m820 -140 c165 -167 306 -313312 -325 30 -59 -7 -138 -76 -162 -32 -12 -46 -12 -70 -2 -16 6 -168 151 -338321 l-310 310 80 80 c44 44 84 80 90 80 5 0 146 -136 312 -302z m-2435 -115c43 -43 78 -82 78 -89 0 -6 -62 -72 -138 -146 -109 -108 -146 -138 -174 -14394 -18 -179 86 -137 168 14 28 270 287 284 287 5 0 45 -35 87 -77z m680 0c43 -43 78 -82 78 -88 0 -6 -138 -149 -307 -317 -270 -268 -313 -307 -347-313 -94 -18 -177 86 -135 168 14 28 610 627 624 627 5 0 45 -35 87 -77z m680 0 c43 -43 78 -82 78 -88 0 -13 -322 -335 -335 -335 -13 0 -165 152 -165 165 013 322 335 335 335 5 0 45 -35 87 -77z m680 0 c43 -43 78 -82 78 -88 0 -13-322 -335 -335 -335 -13 0 -165 152 -165 165 0 13 322 335 335 335 5 0 45 -3587 -77z m-1105 -425 c90 -90 163 -167 163 -173 0 -13 -152 -165 -165 -165 -130 -335 322 -335 335 0 13 152 165 165 165 5 0 83 -73 172 -162z m825 -145c272 -274 307 -312 314 -348 15 -81 -60 -156 -141 -141 -36 7 -74 42 -347 314-170 169 -308 311 -308 317 0 13 152 165 165 165 6 0 148 -138 317 -307z m505175 c72 -73 136 -143 142 -155 42 -82 -41 -186 -135 -168 -31 5 -62 30 -179145 l-140 139 85 86 c46 47 87 85 90 85 3 0 64 -60 137 -132z m-1585 -285 c43-43 78 -82 78 -88 0 -6 -62 -72 -137 -147 -117 -115 -144 -137 -178 -144 -8015 -156 60 -141 141 6 32 30 62 144 177 74 76 140 138 146 138 6 0 46 -35 88-77z m680 0 c43 -43 78 -82 78 -88 0 -14 -599 -610 -627 -624 -83 -42 -186 43-168 138 6 30 54 84 313 344 168 169 311 307 316 307 6 0 46 -35 88 -77z m230-401 c113 -114 138 -145 144 -176 18 -97 -88 -177 -174 -132 -15 8 -85 73-157 145 l-130 131 85 85 c46 47 87 85 91 85 3 0 67 -62 141 -138z"/>
+        </g>
+      </svg>
+      <span>Háptica</span>
+    </div>
+    <p class="footer-copy">© 2025 Háptica. Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } }),
+    { threshold: 0.1, rootMargin: '0px 0px -28px 0px' }
+  );
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  const form = document.getElementById('contactForm');
+  const success = document.getElementById('formSuccess');
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    const btn = form.querySelector('.f-submit');
+    btn.textContent = 'Enviando…'; btn.disabled = true;
+    setTimeout(() => { form.style.display = 'none'; success.classList.add('show'); }, 800);
+  });
+
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const t = document.querySelector(a.getAttribute('href'));
+      if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+</script>
+</body>
+</html>
