@@ -317,13 +317,20 @@
       font-size: clamp(1.9rem, 3.5vw, 2.6rem);
       font-weight: 800;
       color: var(--teal);
-      margin-bottom: 52px;
+      margin-bottom: 20px;
+    }
+    .section-sub {
+      font-size: 1rem;
+      color: rgba(0,50,55,0.55);
+      margin-bottom: 0;
+      line-height: 1.6;
     }
 
     .form-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 24px;
+      margin-top: 32px;
     }
     .form-card {
       border: 1.5px solid rgba(0,50,55,0.1);
@@ -355,7 +362,101 @@
     .li-link svg { width: 14px; height: 14px; }
 
     /* ══════════════════════════════════════════════════════
-       §5  CONTACTO — teal oscuro
+       §5  CASOS DE ÉXITO — crema
+    ══════════════════════════════════════════════════════ */
+    .casos { background: var(--cream); padding: 96px 0; }
+    .casos-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+    .casos-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+      margin-top: 52px;
+    }
+    .caso-card {
+      background: var(--white);
+      border-radius: 6px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,50,55,0.07);
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .caso-card:hover {
+      box-shadow: 0 12px 40px rgba(0,50,55,0.14);
+      transform: translateY(-4px);
+    }
+    .caso-visual {
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .caso-visual svg.caso-icon {
+      width: 64px; height: 64px;
+      opacity: 0.9;
+      z-index: 1;
+    }
+    .caso-body { padding: 28px 28px 32px; }
+    .caso-label {
+      font-family: 'Gotham', sans-serif;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 8px;
+    }
+    .caso-title {
+      font-family: 'Gotham', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--teal);
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .caso-desc {
+      font-size: 0.88rem;
+      line-height: 1.7;
+      color: rgba(0,50,55,0.6);
+      margin-bottom: 0;
+    }
+    .caso-stats {
+      display: flex;
+      gap: 0;
+      margin-top: 24px;
+      border-top: 1px solid rgba(0,50,55,0.07);
+      padding-top: 20px;
+    }
+    .caso-stat {
+      flex: 1;
+      padding-right: 16px;
+      border-right: 1px solid rgba(0,50,55,0.07);
+    }
+    .caso-stat:last-child { border-right: none; padding-right: 0; padding-left: 16px; }
+    .caso-stat:not(:first-child):not(:last-child) { padding-left: 16px; }
+    .caso-stat-num {
+      font-family: 'Gotham', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--teal);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .caso-stat-label {
+      font-size: 0.72rem;
+      color: rgba(0,50,55,0.5);
+      line-height: 1.3;
+    }
+    @media (max-width: 700px) {
+      .casos-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ══════════════════════════════════════════════════════
+       §6  CONTACTO — teal oscuro
     ══════════════════════════════════════════════════════ */
     .contacto { background: var(--teal); padding: 96px 0; }
     .contacto-grid {
@@ -645,8 +746,83 @@
   </div>
 </section>
 
-<!-- Wave blanca → teal -->
+<!-- Wave blanca → crema -->
 <div class="wave-div" aria-hidden="true" style="background:var(--white);">
+  <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:40px;">
+    <path d="M0,20 C360,40 1080,0 1440,20 L1440,40 L0,40Z" fill="#f5f0e6"/>
+  </svg>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     §5  CASOS DE ÉXITO
+════════════════════════════════════════════════════════ -->
+<section class="casos" id="casos">
+  <div class="casos-inner">
+    <p class="section-eyebrow reveal">Casos de Éxito</p>
+    <h2 class="section-heading reveal reveal-d1">Lo que hemos logrado<br>con nuestros clientes</h2>
+    <p class="section-sub reveal reveal-d2">Resultados reales de equipos que ya navegan con IA.</p>
+
+    <div class="casos-grid">
+
+      <!-- Caso 01 — Fintech · México -->
+      <div class="caso-card reveal reveal-d2">
+        <div class="caso-visual" style="background: linear-gradient(135deg, #FA4616 0%, #003237 100%);">
+          <svg class="caso-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- red de personas -->
+            <circle cx="32" cy="14" r="6" fill="white" opacity="0.9"/>
+            <circle cx="12" cy="44" r="6" fill="white" opacity="0.9"/>
+            <circle cx="52" cy="44" r="6" fill="white" opacity="0.9"/>
+            <line x1="32" y1="20" x2="12" y2="38" stroke="white" stroke-width="2" opacity="0.6"/>
+            <line x1="32" y1="20" x2="52" y2="38" stroke="white" stroke-width="2" opacity="0.6"/>
+            <line x1="18" y1="44" x2="46" y2="44" stroke="white" stroke-width="2" opacity="0.6"/>
+            <circle cx="32" cy="44" r="4" fill="white" opacity="0.5"/>
+          </svg>
+        </div>
+        <div class="caso-body">
+          <p class="caso-label">Adopción de IA a escala</p>
+          <h3 class="caso-title">Fintech · México</h3>
+          <p class="caso-desc">Acompañamos a una fintech mexicana en su proceso de adopción de IA generativa, cerrando brechas de conocimiento en el 70% de sus colaboradores e integrando el uso de IA en el trabajo diario de manera sostenible.</p>
+          <div class="caso-stats">
+            <div class="caso-stat">
+              <div class="caso-stat-num">973</div>
+              <div class="caso-stat-label">colaboradores formados</div>
+            </div>
+            <div class="caso-stat">
+              <div class="caso-stat-num">80h</div>
+              <div class="caso-stat-label">de formación</div>
+            </div>
+            <div class="caso-stat">
+              <div class="caso-stat-num">14</div>
+              <div class="caso-stat-label">audiencias impactadas</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Caso 02 — Aseguradora · Colombia -->
+      <div class="caso-card reveal reveal-d3">
+        <div class="caso-visual" style="background: linear-gradient(135deg, #003237 0%, #FBB833 100%);">
+          <svg class="caso-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- estrategia / liderazgo -->
+            <rect x="20" y="28" width="24" height="20" rx="2" fill="white" opacity="0.9"/>
+            <polygon points="32,10 44,28 20,28" fill="white" opacity="0.6"/>
+            <line x1="26" y1="36" x2="38" y2="36" stroke="#003237" stroke-width="2"/>
+            <line x1="26" y1="41" x2="34" y2="41" stroke="#003237" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="caso-body">
+          <p class="caso-label">Innovación con IA para líderes</p>
+          <h3 class="caso-title">Aseguradora · Colombia</h3>
+          <p class="caso-desc">Diseñamos e implementamos talleres prácticos para los líderes de una aseguradora colombiana, con foco en la creación de agentes de IA y audiencias sintéticas como palanca de sus programas de innovación corporativa.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Wave crema → teal -->
+<div class="wave-div" aria-hidden="true" style="background:var(--cream);">
   <svg viewBox="0 0 1440 40" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style="height:40px;">
     <path d="M0,10 C240,40 720,0 1440,22 L1440,40 L0,40Z" fill="#003237"/>
   </svg>
