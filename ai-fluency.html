@@ -922,28 +922,109 @@
   </div>
 </footer>
 
+<!-- ── Firebase SDK (compat CDN) ───────────────────────── -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-analytics-compat.js"></script>
+
 <script>
+  /* ── Reveal animations ─────────────────────────────────── */
   const io = new IntersectionObserver(
-    entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } }),
+    entries => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+    }),
     { threshold: 0.1, rootMargin: '0px 0px -28px 0px' }
   );
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-  const form = document.getElementById('contactForm');
-  const success = document.getElementById('formSuccess');
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    if (!form.checkValidity()) { form.reportValidity(); return; }
-    const btn = form.querySelector('.f-submit');
-    btn.textContent = 'Enviando…'; btn.disabled = true;
-    setTimeout(() => { form.style.display = 'none'; success.classList.add('show'); }, 800);
-  });
-
+  /* ── Smooth scroll ─────────────────────────────────────── */
   document.querySelectorAll('a[href^="#"]').forEach(a => {
     a.addEventListener('click', e => {
       const t = document.querySelector(a.getAttribute('href'));
       if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); }
     });
+  });
+
+  /* ── Firebase init ─────────────────────────────────────── */
+  const firebaseConfig = {
+    apiKey:            "AIzaSyAR3LYxzsRquDhbSptxXJRVHWIWHcLcazU",
+    authDomain:        "ai-fluency-haptica.firebaseapp.com",
+    projectId:         "ai-fluency-haptica",
+    storageBucket:     "ai-fluency-haptica.firebasestorage.app",
+    messagingSenderId: "1025295114184",
+    appId:             "1:1025295114184:web:edcd1fef09fa6be0f96afd",
+    measurementId:     "G-WFQT9T0W4S"
+  };
+  const app       = firebase.initializeApp(firebaseConfig);
+  const db        = firebase.firestore();
+  const analytics = firebase.analytics();
+
+  /* ── Analytics: view_contact_section ──────────────────── */
+  let contactViewed = false;
+  const contactObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !contactViewed) {
+        contactViewed = true;
+        analytics.logEvent('view_contact_section');
+        contactObserver.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  contactObserver.observe(document.getElementById('contacto'));
+
+  /* ── Analytics: click_trainer_linkedin ────────────────── */
+  document.querySelectorAll('.li-link').forEach(link => {
+    link.addEventListener('click', () => {
+      const card   = link.closest('.form-card');
+      const nombre = card ? card.querySelector('.form-name').textContent.trim() : 'desconocido';
+      analytics.logEvent('click_trainer_linkedin', { nombre_formador: nombre });
+    });
+  });
+
+  /* ── Formulario de contacto ────────────────────────────── */
+  const form      = document.getElementById('contactForm');
+  const success   = document.getElementById('formSuccess');
+  const submitBtn = form.querySelector('.f-submit');
+
+  submitBtn.addEventListener('click', () => {
+    if (form.checkValidity()) analytics.logEvent('begin_lead_form');
+  });
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+
+    submitBtn.textContent = 'Enviando…';
+    submitBtn.disabled    = true;
+
+    try {
+      const lead = {
+        nombre:   document.getElementById('nombre').value.trim(),
+        empresa:  document.getElementById('empresa').value.trim(),
+        email:    document.getElementById('correo').value.trim(),
+        personas: document.getElementById('personas').value,
+        mensaje:  document.getElementById('mensaje').value.trim(),
+        fecha:    new Date(),
+        fuente:   'landing-ai-fluency'
+      };
+
+      await db.collection('leads').add(lead);
+
+      analytics.logEvent('generate_lead', {
+        empresa:  lead.empresa,
+        personas: lead.personas
+      });
+
+      form.style.display = 'none';
+      success.classList.add('show');
+      form.reset();
+
+    } catch (err) {
+      console.error('Error al guardar lead:', err);
+      submitBtn.textContent = 'Quiero más información →';
+      submitBtn.disabled    = false;
+      alert('Hubo un problema al enviar el formulario. Por favor intenta de nuevo o escríbenos a angelica@haptica.co');
+    }
   });
 </script>
 </body>
