@@ -945,7 +945,7 @@
     });
   });
 
-  /* ── Firebase init ─────────────────────────────────────── */
+  /* ── Firebase init (guarded) ───────────────────────────── */
   const firebaseConfig = {
     apiKey:            "AIzaSyAR3LYxzsRquDhbSptxXJRVHWIWHcLcazU",
     authDomain:        "ai-fluency-haptica.firebaseapp.com",
@@ -955,9 +955,19 @@
     appId:             "1:1025295114184:web:edcd1fef09fa6be0f96afd",
     measurementId:     "G-WFQT9T0W4S"
   };
-  const app       = firebase.initializeApp(firebaseConfig);
-  const db        = firebase.firestore();
-  const analytics = firebase.analytics();
+
+  let db = null, analytics = null;
+  try {
+    firebase.initializeApp(firebaseConfig);
+    db        = firebase.firestore();
+    analytics = firebase.analytics();
+  } catch (err) {
+    console.warn('Firebase no disponible:', err);
+  }
+
+  function logEvt(name, params) {
+    if (analytics) try { analytics.logEvent(name, params); } catch(e) {}
+  }
 
   /* ── Analytics: view_contact_section ──────────────────── */
   let contactViewed = false;
@@ -965,7 +975,7 @@
     entries.forEach(e => {
       if (e.isIntersecting && !contactViewed) {
         contactViewed = true;
-        analytics.logEvent('view_contact_section');
+        logEvt('view_contact_section');
         contactObserver.unobserve(e.target);
       }
     });
@@ -977,7 +987,7 @@
     link.addEventListener('click', () => {
       const card   = link.closest('.form-card');
       const nombre = card ? card.querySelector('.form-name').textContent.trim() : 'desconocido';
-      analytics.logEvent('click_trainer_linkedin', { nombre_formador: nombre });
+      logEvt('click_trainer_linkedin', { nombre_formador: nombre });
     });
   });
 
@@ -987,8 +997,20 @@
   const submitBtn = form.querySelector('.f-submit');
 
   submitBtn.addEventListener('click', () => {
-    if (form.checkValidity()) analytics.logEvent('begin_lead_form');
+    if (form.checkValidity()) logEvt('begin_lead_form');
   });
+
+  function showError() {
+    submitBtn.textContent = 'Quiero más información →';
+    submitBtn.disabled    = false;
+    const msg = document.createElement('p');
+    msg.style.cssText = 'color:#FBB833;font-size:0.82rem;margin-top:10px;text-align:center;';
+    msg.textContent   = 'Hubo un problema al enviar. Escríbenos directamente a angelica@haptica.co';
+    if (!form.querySelector('.send-error')) {
+      msg.className = 'send-error';
+      form.appendChild(msg);
+    }
+  }
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
@@ -996,35 +1018,38 @@
 
     submitBtn.textContent = 'Enviando…';
     submitBtn.disabled    = true;
+    const errEl = form.querySelector('.send-error');
+    if (errEl) errEl.remove();
 
-    try {
-      const lead = {
-        nombre:   document.getElementById('nombre').value.trim(),
-        empresa:  document.getElementById('empresa').value.trim(),
-        email:    document.getElementById('correo').value.trim(),
-        personas: document.getElementById('personas').value,
-        mensaje:  document.getElementById('mensaje').value.trim(),
-        fecha:    new Date(),
-        fuente:   'landing-ai-fluency'
-      };
+    const lead = {
+      nombre:   document.getElementById('nombre').value.trim(),
+      empresa:  document.getElementById('empresa').value.trim(),
+      email:    document.getElementById('correo').value.trim(),
+      personas: document.getElementById('personas').value,
+      mensaje:  document.getElementById('mensaje').value.trim(),
+      fecha:    new Date(),
+      fuente:   'landing-ai-fluency'
+    };
 
-      await db.collection('leads').add(lead);
-
-      analytics.logEvent('generate_lead', {
-        empresa:  lead.empresa,
-        personas: lead.personas
-      });
-
-      form.style.display = 'none';
-      success.classList.add('show');
-      form.reset();
-
-    } catch (err) {
-      console.error('Error al guardar lead:', err);
-      submitBtn.textContent = 'Quiero más información →';
-      submitBtn.disabled    = false;
-      alert('Hubo un problema al enviar el formulario. Por favor intenta de nuevo o escríbenos a angelica@haptica.co');
+    /* Intentar guardar en Firestore con timeout de 10s */
+    if (db) {
+      const timeout = new Promise((_, rej) =>
+        setTimeout(() => rej(new Error('timeout')), 10000)
+      );
+      try {
+        await Promise.race([db.collection('leads').add(lead), timeout]);
+        logEvt('generate_lead', { empresa: lead.empresa, personas: lead.personas });
+      } catch (err) {
+        console.error('Firestore error:', err);
+        showError();
+        return;
+      }
     }
+
+    /* Éxito (con o sin Firestore) */
+    form.style.display = 'none';
+    success.classList.add('show');
+    form.reset();
   });
 </script>
 </body>
